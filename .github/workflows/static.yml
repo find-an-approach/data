@@ -33,7 +33,7 @@ jobs:
         name: Check against current release
         run: diff /tmp/latest_release.txt used_release.txt
       - name: Commit latest release to repo
-        if: steps.diff.conclusion == 'failure'
+        if: steps.diff.outcome == 'failure'
         run: |
           cp /tmp/latest_release.txt used_release.txt
           git config --global user.name 'Find an Approach'
@@ -41,18 +41,18 @@ jobs:
           git commit -am "Automated report"
           git push
       - name: Download new release
-        if: steps.diff.conclusion == 'failure'
+        if: steps.diff.outcome == 'failure'
         run: mkdir dist && cd dist && wget "https://github.com/ammaraskar/faa-instrument-approach-db/releases/latest/download/approaches.json"
       - name: Setup Pages
-        if: steps.diff.conclusion == 'failure'
+        if: steps.diff.outcome == 'failure'
         uses: actions/configure-pages@v5
       - name: Upload artifact
-        if: steps.diff.conclusion == 'failure'
+        if: steps.diff.outcome == 'failure'
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist folder
           path: './dist'
       - name: Deploy to GitHub Pages
-        if: steps.diff.conclusion == 'failure'
+        if: steps.diff.outcome == 'failure'
         id: deployment
         uses: actions/deploy-pages@v4
