@@ -29,6 +29,7 @@ jobs:
       - name: Grab latest release name
         run: curl https://api.github.com/repos/ammaraskar/faa-instrument-approach-db/releases/latest | jq '.tag_name' > /tmp/latest_release.txt
       - id: diff
+        continue-on-error: true
         name: Check against current release
         run: diff /tmp/latest_release.txt used_release.txt
       - name: Commit latest release to repo
